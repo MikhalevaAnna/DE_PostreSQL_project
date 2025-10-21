@@ -48,7 +48,7 @@ SELECT cron.schedule(
 6. В результате проделанной работы в **Docker-контейнере** получила файл, в котором отражены изменения таблицы `users`: <br>
 
 ```
-(.venv) PS D:\DE\DE_Postres_project> docker exec -it postgres_db bash
+(.venv) PS D:\DE\DE_PostreSQL_project> docker exec -it postgres_db bash
 root@1ef39497c311:/# ls /tmp/users_audit_*.csv
 /tmp/users_audit_export_20251021.csv
 root@1ef39497c311:/# cat /tmp/users_audit_export_20251021.csv
