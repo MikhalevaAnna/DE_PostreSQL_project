@@ -11,7 +11,7 @@
 ## Реализация:
 
 1. Создала функцию логирования **log_user_changes()** в таблицу `users_audit` изменений по трем полям `name`, `email`, `role`, которые происходили в таблице `users`. </br>
-### Схемы таблиц: 
+#### Схемы таблиц: 
 ```
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
