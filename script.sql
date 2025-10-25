@@ -25,23 +25,24 @@ DROP FUNCTION log_user_changes();
 CREATE OR REPLACE FUNCTION log_user_changes()
 RETURNS TRIGGER AS $$
 BEGIN
-     -- Логируются изменения поля name
+     
     IF TG_OP = 'UPDATE' THEN
+    -- Логируются изменения поля name
         IF OLD.name IS DISTINCT FROM NEW.name THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER, CURRENT_TIMESTAMP);
+            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER, OLD.updated_at);
         END IF;
 
     -- Логируются изменения поля email
         IF OLD.email IS DISTINCT FROM NEW.email THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER, CURRENT_TIMESTAMP);
+            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER, OLD.updated_at);
         END IF;
 
     -- Логируются изменения поля role
         IF OLD.role IS DISTINCT FROM NEW.role THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER, CURRENT_TIMESTAMP);
+            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER, OLD.updated_at);
         END IF;
 
         RETURN NEW;
@@ -89,8 +90,8 @@ BEGIN
                 ua.old_value,
                 ua.new_value
             FROM users_audit ua
-            WHERE ua.changed_at >= CURRENT_DATE
-            AND ua.changed_at < CURRENT_DATE + INTERVAL ''1 day''
+            WHERE ua.changed_at >= CURRENT_DATE::timestamp
+            AND ua.changed_at < CURRENT_DATE::timestamp + INTERVAL ''1 day''
             ORDER BY ua.changed_at
         ) TO %L WITH CSV HEADER',
         export_file_path
