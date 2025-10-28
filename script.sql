@@ -21,7 +21,7 @@ CREATE TABLE users_audit (
 );
 
 -- Создается функция для логирования изменений в таблицу users_audit по трем полям: name, email, role, которые происходили в таблице users
-DROP FUNCTION log_user_changes();
+DROP FUNCTION IF EXISTS log_user_changes();
 CREATE OR REPLACE FUNCTION log_user_changes()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -53,6 +53,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Создается триггер, который будет вызывать функцию при обновлении таблицы users
+DROP TRIGGER IF EXISTS users_audit_trigger ON users;
 CREATE TRIGGER users_audit_trigger
     BEFORE UPDATE ON users
     FOR EACH ROW
@@ -66,13 +67,14 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 SELECT * FROM pg_extension WHERE extname = 'pg_cron';
 
 -- Создается функция для экспорта свежих данных за сегодня в docker в папку /tmp/
-DROP FUNCTION export_yesterdays_audit_data();
+DROP FUNCTION IF EXISTS export_yesterdays_audit_data();
 CREATE OR REPLACE FUNCTION export_yesterdays_audit_data()
 RETURNS TEXT AS $$
 DECLARE
     export_file_path TEXT;
     export_date TEXT;
     result_text TEXT;
+    yesterday_date DATE;
 BEGIN
     yesterday_date := CURRENT_DATE - INTERVAL '1 day';
     -- Формируется дата для имени файла
@@ -120,10 +122,10 @@ SELECT cron.schedule(
 SELECT * FROM cron.job;
 
 -- Вставляются тестовые данные в таблицу users
-INSERT INTO users (id, name, email, role) VALUES
-(1, 'Иван Иванов', 'ivan@example.com', 'user'),
-(2, 'Петр Петров', 'petr@example.com', 'admin'),
-(3, 'Андрей Сидоров', 'sidorov@example.com', 'manager');
+INSERT INTO users (id, name, email, role, updated_at) VALUES
+(1, 'Иван Иванов', 'ivan@example.com', 'user', '2025-10-27 21:33:55.845'),
+(2, 'Петр Петров', 'petr@example.com', 'admin', '2025-10-27 21:33:55.845'),
+(3, 'Андрей Сидоров', 'sidorov@example.com', 'manager', '2025-10-27 21:33:55.845');
 
 -- Обновляются данные в таблице users для тестирования триггера
 UPDATE users SET name = 'Иван Сидоров', role = 'admin' WHERE id = 1;
@@ -143,4 +145,4 @@ SELECT export_yesterdays_audit_data();
 SELECT * FROM cron.job;
 
 -- Проверяется, что задание cron выполнено
-SELECT * FROM cron.job_run_details;
+SELECT * FROM cron.job_run_details
