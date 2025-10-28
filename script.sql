@@ -74,8 +74,9 @@ DECLARE
     export_date TEXT;
     result_text TEXT;
 BEGIN
+    yesterday_date := CURRENT_DATE - INTERVAL '1 day';
     -- Формируется дата для имени файла
-    export_date := to_char(CURRENT_DATE, 'YYYYMMDD');
+    export_date := to_char(yesterday_date, 'YYYYMMDD');
     export_file_path := '/tmp/users_audit_export_' || export_date || '.csv';
 
     -- Экспортируются данные за сегодняшний день в CSV
@@ -90,10 +91,12 @@ BEGIN
                 ua.old_value,
                 ua.new_value
             FROM users_audit ua
-            WHERE ua.changed_at >= CURRENT_DATE::timestamp
-            AND ua.changed_at < CURRENT_DATE::timestamp + INTERVAL ''1 day''
+            WHERE ua.changed_at >= %L::timestamp
+            AND ua.changed_at < %L::timestamp + INTERVAL ''1 day''
             ORDER BY ua.changed_at
         ) TO %L WITH CSV HEADER',
+        yesterday_date,
+        yesterday_date,
         export_file_path
     );
 
