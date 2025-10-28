@@ -34,14 +34,14 @@ CREATE TABLE users_audit (
 ```
 2. Создала **trigger** `users_audit_trigger` на таблицу `users`. </br>
 3. Установила расширение **pg_cron** `CREATE EXTENSION IF NOT EXISTS pg_cron;`. </br>
-4. Создала функцию, `export_todays_audit_data()` которая достает только свежие данные (за сегодняшний день) и сохраняет их в образе **Docker** по пути `/tmp/users_audit_export_`, а далее указывается та дата, за которую этот **csv** был создан.
+4. Создала функцию, `export_yesterdays_audit_data()` которая достает только свежие данные (за вчерашний день) и сохраняет их в образе **Docker** по пути `/tmp/users_audit_export_`, а далее указывается та дата, за которую этот **csv** был создан.
 5. Установила планировщик **pg_cron** на 3:00 ночи. </br>
 
 ```
 SELECT cron.schedule(
-    'export-daily-audit-data',    -- имя задания
+    'export_yesterdays_audit_data',    -- имя задания
     '0 3 * * *',                  -- расписание: каждый день в 3:00
-    'SELECT export_todays_audit_data();'  -- выполняемая функция
+    'SELECT export_yesterdays_audit_data();'  -- выполняемая функция
 );
 ```
 
