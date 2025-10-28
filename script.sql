@@ -66,8 +66,8 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 SELECT * FROM pg_extension WHERE extname = 'pg_cron';
 
 -- Создается функция для экспорта свежих данных за сегодня в docker в папку /tmp/
-DROP FUNCTION export_todays_audit_data();
-CREATE OR REPLACE FUNCTION export_todays_audit_data()
+DROP FUNCTION export_yesterdays_audit_data();
+CREATE OR REPLACE FUNCTION export_yesterdays_audit_data()
 RETURNS TEXT AS $$
 DECLARE
     export_file_path TEXT;
@@ -111,9 +111,9 @@ $$ LANGUAGE plpgsql;
 
 -- Создается задание в pg_cron для ежедневного выполнения в 3:00 ночи
 SELECT cron.schedule(
-    'export-daily-audit-data',    -- имя задания
+    'export-yesterdays-audit-data',    -- имя задания
     '0 3 * * *',                  -- расписание: каждый день в 3:00
-    'SELECT export_todays_audit_data();'  -- выполняемая функция
+    'SELECT export_yesterdays_audit_data();'  -- выполняемая функция
 );
 
 -- Проверяется, что задание создано
@@ -137,7 +137,7 @@ SELECT * FROM users;
 SELECT * FROM users_audit;
 
 -- Тестируется функция экспорта вручную
-SELECT public.export_todays_audit_data();
+SELECT export_yesterdays_audit_data();
 
 -- Проверяется задание cron
 SELECT * FROM cron.job;
