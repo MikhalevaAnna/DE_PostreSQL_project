@@ -22,7 +22,7 @@ CREATE TABLE users_audit (
 
 -- Создается функция для логирования изменений в таблицу users_audit по трем полям: name, email, role, которые происходили в таблице users
 DROP FUNCTION IF EXISTS log_user_changes();
-CREATE OR REPLACE FUNCTION log_user_changes()
+CREATE FUNCTION log_user_changes()
 RETURNS TRIGGER AS $$
 BEGIN
      
@@ -68,7 +68,7 @@ SELECT * FROM pg_extension WHERE extname = 'pg_cron';
 
 -- Создается функция для экспорта свежих данных за сегодня в docker в папку /tmp/
 DROP FUNCTION IF EXISTS export_yesterdays_audit_data();
-CREATE OR REPLACE FUNCTION export_yesterdays_audit_data()
+CREATE FUNCTION export_yesterdays_audit_data()
 RETURNS TEXT AS $$
 DECLARE
     export_file_path TEXT;
