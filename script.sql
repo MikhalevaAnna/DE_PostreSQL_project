@@ -127,9 +127,9 @@ INSERT INTO users (id, name, email, role) VALUES
 (3, 'Андрей Сидоров', 'sidorov@example.com', 'manager');
 
 -- Обновляются данные в таблице users для тестирования триггера
-UPDATE users SET name = 'Иван Сидоров', role = 'admin' WHERE id = 1;
-UPDATE users SET email = 'petr_p@example.com' WHERE id = 2;
-UPDATE users SET name='Сергей Иванов', email = 'ivanov_s@example.com', role ='user' WHERE id = 3;
+UPDATE users SET name = 'Иван Сидоров', role = 'admin', updated_at = CURRENT_TIMESTAMP WHERE id = 1;
+UPDATE users SET email = 'petr_p@example.com', updated_at = CURRENT_TIMESTAMP WHERE id = 2;
+UPDATE users SET name='Сергей Иванов', email = 'ivanov_s@example.com', role ='user', updated_at = CURRENT_TIMESTAMP WHERE id = 3;
 
 -- Проверяется, что записи в таблице users изменились
 SELECT * FROM users;
