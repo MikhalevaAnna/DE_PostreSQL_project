@@ -30,19 +30,19 @@ BEGIN
     -- Логируются изменения поля name
         IF OLD.name IS DISTINCT FROM NEW.name THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (OLD.id, 'name', OLD.name, NEW.name, CURRENT_USER, OLD.updated_at);
+            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER, NEW.updated_at);
         END IF;
 
     -- Логируются изменения поля email
         IF OLD.email IS DISTINCT FROM NEW.email THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (OLD.id, 'email', OLD.email, NEW.email, CURRENT_USER,  OLD.updated_at);
+            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER,  NEW.updated_at);
         END IF;
 
     -- Логируются изменения поля role
         IF OLD.role IS DISTINCT FROM NEW.role THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (OLD.id, 'role', OLD.role, NEW.role, CURRENT_USER,  OLD.updated_at);
+            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER,  NEW.updated_at);
         END IF;
 
         RETURN NEW;
