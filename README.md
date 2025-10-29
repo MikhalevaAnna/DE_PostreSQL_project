@@ -50,15 +50,15 @@ SELECT cron.schedule(
 ```
 PS D:\DE\DE_GIT\DE_PostreSQL_project> docker exec -it postgres_db bash
 root@1ef39497c311:/# ls /tmp/users_audit_*.csv
-/tmp/users_audit_export_20251025.csv
-root@1ef39497c311:/# cat /tmp/users_audit_export_20251025.csv
-id,user_id,changed_at,changed_by,field_changed,old_value,new_value
-1,1,2025-10-25 21:33:55.845297,user,name,Иван Иванов,Иван Сидоров
-2,1,2025-10-25 21:33:55.845297,user,role,user,admin
-3,2,2025-10-25 21:33:55.845297,user,email,petr@example.com,petr_p@example.com
-4,3,2025-10-25 21:33:55.845297,user,name,Андрей Сидоров,Сергей Иванов
-5,3,2025-10-25 21:33:55.845297,user,email,sidorov@example.com,ivanov_s@example.com
-6,3,2025-10-25 21:33:55.845297,user,role,manager,user
+/tmp/users_audit_export_20251028.csv
+root@1ef39497c311:/# cat /tmp/users_audit_export_20251028.csv
+user_id,field_changed,old_value,new_value,changed_by,changed_at
+1,name,Иван Иванов,Иван Сидоров,user,2025-10-28 13:14:21.487375
+1,role,user,admin,user,2025-10-28 13:14:21.487375
+2,email,petr@example.com,petr_p@example.com,user,2025-10-28 13:14:21.487375
+3,name,Андрей Сидоров,Сергей Иванов,user,2025-10-28 13:14:21.487375
+3,email,sidorov@example.com,ivanov_s@example.com,user,2025-10-28 13:14:21.487375
+3,role,manager,user,user,2025-10-28 13:14:21.487375
 ```
 
 7. В репозитории представлен **sql-скрипт** с тестовыми данными, при запуске котрого выполняются действия для получения итогового результата, который отражен в пункте 6.                   
