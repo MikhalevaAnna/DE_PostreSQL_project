@@ -122,10 +122,10 @@ SELECT cron.schedule(
 SELECT * FROM cron.job;
 
 -- Вставляются тестовые данные в таблицу users
-INSERT INTO users (id, name, email, role, updated_at) VALUES
-(1, 'Иван Иванов', 'ivan@example.com', 'user', '2025-10-27 21:33:55.845'),
-(2, 'Петр Петров', 'petr@example.com', 'admin', '2025-10-27 21:33:55.845'),
-(3, 'Андрей Сидоров', 'sidorov@example.com', 'manager', '2025-10-27 21:33:55.845');
+INSERT INTO users (id, name, email, role) VALUES
+(1, 'Иван Иванов', 'ivan@example.com', 'user'),
+(2, 'Петр Петров', 'petr@example.com', 'admin'),
+(3, 'Андрей Сидоров', 'sidorov@example.com', 'manager');
 
 -- Обновляются данные в таблице users для тестирования триггера
 UPDATE users SET name = 'Иван Сидоров', role = 'admin' WHERE id = 1;
