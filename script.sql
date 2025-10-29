@@ -29,20 +29,20 @@ BEGIN
     IF TG_OP = 'UPDATE' THEN
     -- Логируются изменения поля name
         IF OLD.name IS DISTINCT FROM NEW.name THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER, OLD.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля email
         IF OLD.email IS DISTINCT FROM NEW.email THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER, OLD.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля role
         IF OLD.role IS DISTINCT FROM NEW.role THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER, OLD.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER);
         END IF;
 
         RETURN NEW;
