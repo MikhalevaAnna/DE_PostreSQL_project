@@ -85,13 +85,12 @@ BEGIN
     EXECUTE format(
         'COPY (
             SELECT
-                ua.id,
                 ua.user_id,
-                ua.changed_at,
-                ua.changed_by,
                 ua.field_changed,
                 ua.old_value,
-                ua.new_value
+                ua.new_value,
+                ua.changed_by,
+                ua.changed_at
             FROM users_audit ua
             WHERE ua.changed_at >= %L::timestamp
             AND ua.changed_at < %L::timestamp + INTERVAL ''1 day''
