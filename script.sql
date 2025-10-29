@@ -29,20 +29,20 @@ BEGIN
     IF TG_OP = 'UPDATE' THEN
     -- Логируются изменения поля name
         IF OLD.name IS DISTINCT FROM NEW.name THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER, NEW.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля email
         IF OLD.email IS DISTINCT FROM NEW.email THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER,  NEW.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля role
         IF OLD.role IS DISTINCT FROM NEW.role THEN
-            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by, changed_at)
-            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER,  NEW.updated_at);
+            INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
+            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER);
         END IF;
 
         RETURN NEW;
@@ -127,9 +127,9 @@ INSERT INTO users (id, name, email, role) VALUES
 (3, 'Андрей Сидоров', 'sidorov@example.com', 'manager');
 
 -- Обновляются данные в таблице users для тестирования триггера
-UPDATE users SET name = 'Иван Сидоров', role = 'admin', updated_at = CURRENT_TIMESTAMP WHERE id = 1;
-UPDATE users SET email = 'petr_p@example.com', updated_at = CURRENT_TIMESTAMP WHERE id = 2;
-UPDATE users SET name='Сергей Иванов', email = 'ivanov_s@example.com', role ='user', updated_at = CURRENT_TIMESTAMP WHERE id = 3;
+UPDATE users SET name = 'Иван Сидоров', role = 'admin' WHERE id = 1;
+UPDATE users SET email = 'petr_p@example.com' WHERE id = 2;
+UPDATE users SET name='Сергей Иванов', email = 'ivanov_s@example.com', role ='user' WHERE id = 3;
 
 -- Проверяется, что записи в таблице users изменились
 SELECT * FROM users;
