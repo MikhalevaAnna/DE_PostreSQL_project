@@ -25,30 +25,26 @@ DROP FUNCTION IF EXISTS log_user_changes();
 CREATE FUNCTION log_user_changes()
 RETURNS TRIGGER AS $$
 BEGIN
-     
-    IF TG_OP = 'UPDATE' THEN
+
     -- Логируются изменения поля name
         IF OLD.name IS DISTINCT FROM NEW.name THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
-            VALUES (NEW.id, 'name', OLD.name, NEW.name, CURRENT_USER);
+            VALUES (OLD.id, 'name', OLD.name, NEW.name, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля email
         IF OLD.email IS DISTINCT FROM NEW.email THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
-            VALUES (NEW.id, 'email', OLD.email, NEW.email, CURRENT_USER);
+            VALUES (OLD.id, 'email', OLD.email, NEW.email, CURRENT_USER);
         END IF;
 
     -- Логируются изменения поля role
         IF OLD.role IS DISTINCT FROM NEW.role THEN
             INSERT INTO users_audit (user_id, field_changed, old_value, new_value, changed_by)
-            VALUES (NEW.id, 'role', OLD.role, NEW.role, CURRENT_USER);
+            VALUES (OLD.id, 'role', OLD.role, NEW.role, CURRENT_USER);
         END IF;
 
         RETURN NEW;
-    ELSE
-        RETURN NULL;
-    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -78,7 +74,7 @@ DECLARE
 BEGIN
     yesterday_date := CURRENT_DATE - INTERVAL '1 day';
     -- Формируется дата для имени файла
-    export_date := to_char(yesterday_date, 'YYYYMMDD');
+    export_date := to_char(CURRENT_TIMESTAMP, 'YYYYMMDD_HH24MI');
     export_file_path := '/tmp/users_audit_export_' || export_date || '.csv';
 
     -- Экспортируются данные за сегодняшний день в CSV
