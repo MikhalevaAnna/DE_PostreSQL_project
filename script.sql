@@ -89,8 +89,10 @@ BEGIN
                 ua.changed_at
             FROM users_audit ua
             WHERE ua.changed_at >= %L::timestamp
+            AND ua.changed_at < %L::timestamp + INTERVAL ''1 day''
             ORDER BY ua.changed_at
         ) TO %L WITH CSV HEADER',
+        yesterday_date,
         yesterday_date,
         export_file_path
     );
