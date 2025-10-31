@@ -62,7 +62,7 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 -- Проверяется, что расширение установлено
 SELECT * FROM pg_extension WHERE extname = 'pg_cron';
 
--- Создается функция для экспорта свежих данных за сегодня в docker в папку /tmp/
+-- Создается функция для экспорта вчерашних данных в docker в папку /tmp/
 DROP FUNCTION IF EXISTS export_yesterdays_audit_data();
 CREATE FUNCTION export_yesterdays_audit_data()
 RETURNS TEXT AS $$
@@ -77,7 +77,7 @@ BEGIN
     export_date := to_char(CURRENT_TIMESTAMP, 'YYYYMMDD_HH24MI');
     export_file_path := '/tmp/users_audit_export_' || export_date || '.csv';
 
-    -- Экспортируются данные за сегодняшний день в CSV
+    -- Экспортируются данные за вчерашний день в CSV
     EXECUTE format(
         'COPY (
             SELECT
@@ -89,10 +89,8 @@ BEGIN
                 ua.changed_at
             FROM users_audit ua
             WHERE ua.changed_at >= %L::timestamp
-            AND ua.changed_at < %L::timestamp + INTERVAL ''1 day''
             ORDER BY ua.changed_at
         ) TO %L WITH CSV HEADER',
-        yesterday_date,
         yesterday_date,
         export_file_path
     );
