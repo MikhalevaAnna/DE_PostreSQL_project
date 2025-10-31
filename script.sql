@@ -106,8 +106,8 @@ $$ LANGUAGE plpgsql;
 
 -- Создается задание в pg_cron для ежедневного выполнения в 3:00 ночи
 SELECT cron.schedule(
-    'export-yesterdays-audit-data',    -- имя задания
-    '0 3 * * *',                  -- расписание: каждый день в 3:00
+    'export-yesterdays-audit-data',           -- имя задания
+    '0 3 * * *',                              -- расписание: каждый день в 3:00
     'SELECT export_yesterdays_audit_data();'  -- выполняемая функция
 );
 
