@@ -39,8 +39,8 @@ CREATE TABLE users_audit (
 
 ```
 SELECT cron.schedule(
-    'export_yesterdays_audit_data',    -- имя задания
-    '0 3 * * *',                  -- расписание: каждый день в 3:00
+    'export_yesterdays_audit_data',           -- имя задания
+    '0 3 * * *',                              -- расписание: каждый день в 3:00
     'SELECT export_yesterdays_audit_data();'  -- выполняемая функция
 );
 ```
