@@ -74,7 +74,7 @@ DECLARE
 BEGIN
     yesterday_date := CURRENT_DATE - INTERVAL '1 day';
     -- Формируется дата для имени файла
-    export_date := to_char(CURRENT_TIMESTAMP, 'YYYYMMDD_HH24MI');
+    export_date := to_char(CURRENT_TIMESTAMP - INTERVAL '1 day', 'YYYYMMDD_HH24MI');
     export_file_path := '/tmp/users_audit_export_' || export_date || '.csv';
 
     -- Экспортируются данные за вчерашний день в CSV
