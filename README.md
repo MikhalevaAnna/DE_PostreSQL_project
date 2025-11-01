@@ -50,8 +50,8 @@ SELECT cron.schedule(
 ```
 PS D:\DE\DE_GIT\DE_PostreSQL_project> docker exec -it postgres_db bash
 root@1ef39497c311:/# ls /tmp/users_audit_*.csv
-/tmp/users_audit_export_20251029_0300.csv
-root@1ef39497c311:/# cat /tmp/users_audit_export_20251029_0300.csv
+/tmp/users_audit_export_20251028_0300.csv
+root@1ef39497c311:/# cat /tmp/users_audit_export_20251028_0300.csv
 user_id,field_changed,old_value,new_value,changed_by,changed_at
 1,name,Иван Иванов,Иван Сидоров,user,2025-10-28 13:14:21.487375
 1,role,user,admin,user,2025-10-28 13:14:21.487375
